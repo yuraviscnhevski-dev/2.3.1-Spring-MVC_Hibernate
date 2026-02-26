@@ -23,8 +23,8 @@ public class PeopleController {
         return "people/index";
     }
 
-    @GetMapping("/{id}")
-    public String show(@PathVariable("id") int id, Model model ){
+    @GetMapping("/{show}")
+    public String show(@RequestParam("id") int id, Model model) {
         model.addAttribute("person", personDAO.show(id));
         return "people/show";
 
