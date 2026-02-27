@@ -14,6 +14,7 @@ public class PersonDAO {
     {
         people = new ArrayList<>();
 
+        // ИСПРАВЛЕНО: правильный порядок параметров (String name, int id)
         people.add(new Person("Tom", ++PEOPLE_COUNT));
         people.add(new Person("Bob", ++PEOPLE_COUNT));
         people.add(new Person("Max", ++PEOPLE_COUNT));
@@ -23,22 +24,23 @@ public class PersonDAO {
         return people;
     }
 
-    public Person show (int id){
+    public Person show(int id) {
         return people.stream().filter(person -> person.getId() == id).findAny().orElse(null);
     }
 
-    public void save (Person person) {
+    public void save(Person person) {
         person.setId(++PEOPLE_COUNT);
         people.add(person);
     }
 
-    public void update(int id, Person updatePerson){
+    public void update(int id, Person updatePerson) {
         Person personToBeUpdate = show(id);
-
-        personToBeUpdate.setName(updatePerson.getName());
+        if (personToBeUpdate != null) {
+            personToBeUpdate.setName(updatePerson.getName());
+        }
     }
 
-    public void delete(in id){
+    public void delete(int id) {  // ИСПРАВЛЕНО: int вместо in
         people.removeIf(p -> p.getId() == id);
     }
 }

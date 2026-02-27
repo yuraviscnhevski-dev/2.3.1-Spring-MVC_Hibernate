@@ -32,7 +32,7 @@ public class PeopleController {
 
     @GetMapping("/new")
     public String newPerson(Model model) {
-        model.addAttribute("person", new Person());
+        model.addAttribute("person", new Person());  // Пустой объект для формы
         return "people/new";
     }
 
@@ -54,8 +54,8 @@ public class PeopleController {
         return "redirect:/people";
     }
 
-    @DeleteMapping("/{id}")
-    public String delete(RequestParam("id")int id){
+    @PostMapping("/delete")
+    public String delete(@RequestParam("id") int id) {
         personDAO.delete(id);
         return "redirect:/people";
     }

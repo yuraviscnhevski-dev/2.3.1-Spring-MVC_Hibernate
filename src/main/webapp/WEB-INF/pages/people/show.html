@@ -8,8 +8,10 @@
 <p th:text="${person.name}">VALUE</p>
 <p th:text="${person.id}">VALUE</p>
 
-<form th:method="DELETE" th:action="@{/people/{id}(${person.id})}"></form>
-  <input type="submit" value="Delete"/>
+<form th:method="POST" th:action="@{/people/delete(id=${person.id})}">
+    <input type="hidden" name="id" th:value="${person.id}" />
+    <input type="submit" value="Delete" onclick="return confirm('Удалить?')"/>
+</form>
 
 </body>
 </html>
