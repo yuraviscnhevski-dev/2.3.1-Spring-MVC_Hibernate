@@ -1,46 +1,43 @@
 package dao;
 
 import models.Person;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import java.util.List;
 
-@Component
+@Repository
+@Transactional
 public class PersonDAO {
-    private static int PEOPLE_COUNT;
-    private List<Person> people;
 
-    {
-        people = new ArrayList<>();
-
-        // ИСПРАВЛЕНО: правильный порядок параметров (String name, int id)
-        people.add(new Person("Tom", ++PEOPLE_COUNT));
-        people.add(new Person("Bob", ++PEOPLE_COUNT));
-        people.add(new Person("Max", ++PEOPLE_COUNT));
-    }
+    @PersistenceContext
+    private EntityManager entityManager;
 
     public List<Person> index() {
-        return people;
+        return entityManager.createQuery("SELECT p FROM Person p", Person.class)
+                .getResultList();
     }
 
     public Person show(int id) {
-        return people.stream().filter(person -> person.getId() == id).findAny().orElse(null);
+        return entityManager.find(Person.class, id);
     }
 
     public void save(Person person) {
-        person.setId(++PEOPLE_COUNT);
-        people.add(person);
+        entityManager.persist(person);
     }
 
-    public void update(int id, Person updatePerson) {
-        Person personToBeUpdate = show(id);
-        if (personToBeUpdate != null) {
-            personToBeUpdate.setName(updatePerson.getName());
+    public void update(int id, Person updatedPerson) {
+        Person person = entityManager.find(Person.class, id);
+        person.setName(updatedPerson.getName());
+        // Если добавите другие поля, обновляйте их здесь
+    }
+
+    public void delete(int id) {
+        Person person = entityManager.find(Person.class, id);
+        if (person != null) {
+            entityManager.remove(person);
         }
-    }
-
-    public void delete(int id) {  // ИСПРАВЛЕНО: int вместо in
-        people.removeIf(p -> p.getId() == id);
     }
 }
