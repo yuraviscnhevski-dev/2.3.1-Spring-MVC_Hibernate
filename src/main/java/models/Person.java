@@ -2,8 +2,8 @@ package models;
 
 import javax.persistence.*;
 
-@Entity  // ← ЭТО САМОЕ ГЛАВНОЕ!
-@Table(name = "users")  // ← указываем имя таблицы
+@Entity
+@Table(name = "users")
 public class Person {
 
     @Id
