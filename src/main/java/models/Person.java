@@ -14,7 +14,6 @@ public class Person {
     @Column(name = "name")
     private String name;
 
-    // Добавьте остальные поля, если они есть
     @Column(name = "lastName")
     private String lastName;
 
@@ -30,7 +29,6 @@ public class Person {
         this.age = age;
     }
 
-    // Геттеры и сеттеры
     public int getId() { return id; }
     public void setId(int id) { this.id = id; }
 

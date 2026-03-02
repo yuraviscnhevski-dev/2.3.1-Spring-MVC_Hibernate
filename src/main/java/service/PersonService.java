@@ -21,17 +21,12 @@ public class PersonService implements PersonServiceInterface {
 
     @Override
     public List<Person> getAllPeople() {
-        // Здесь можно добавить бизнес-логику, например:
-        // - проверка прав доступа
-        // - логирование
-        // - кэширование
-        // - фильтрация
+
         return personDAO.index();
     }
 
     @Override
     public Person getPersonById(int id) {
-        // Можно добавить проверку существования
         Person person = personDAO.show(id);
         if (person == null) {
             throw new RuntimeException("Person not found with id: " + id);
@@ -41,27 +36,23 @@ public class PersonService implements PersonServiceInterface {
 
     @Override
     public void savePerson(Person person) {
-        // Валидация данных перед сохранением
         validatePerson(person);
         personDAO.save(person);
     }
 
     @Override
     public void updatePerson(int id, Person updatedPerson) {
-        // Проверяем, существует ли запись
-        getPersonById(id); // выбросит исключение, если не найдено
+        getPersonById(id);
         validatePerson(updatedPerson);
         personDAO.update(id, updatedPerson);
     }
 
     @Override
     public void deletePerson(int id) {
-        // Проверяем, существует ли запись
-        getPersonById(id); // выбросит исключение, если не найдено
+        getPersonById(id);
         personDAO.delete(id);
     }
 
-    // Приватный метод для валидации
     private void validatePerson(Person person) {
         if (person.getName() == null || person.getName().trim().isEmpty()) {
             throw new IllegalArgumentException("Name cannot be empty");
@@ -69,6 +60,5 @@ public class PersonService implements PersonServiceInterface {
         if (person.getAge() <= 0) {
             throw new IllegalArgumentException("Age must be positive");
         }
-        // Добавьте другие проверки по необходимости
     }
 }

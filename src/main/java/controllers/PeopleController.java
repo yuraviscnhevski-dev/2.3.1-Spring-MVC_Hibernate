@@ -11,7 +11,7 @@ import service.PersonServiceInterface;  // ← теперь зависит от 
 @RequestMapping("/people")
 public class PeopleController {
 
-    private final PersonServiceInterface personService;  // ← заменили DAO на сервис
+    private final PersonServiceInterface personService;
 
     @Autowired
     public PeopleController(PersonServiceInterface personService) {
@@ -20,13 +20,13 @@ public class PeopleController {
 
     @GetMapping
     public String index(Model model) {
-        model.addAttribute("people", personService.getAllPeople());  // ← через сервис
+        model.addAttribute("people", personService.getAllPeople());
         return "people/index";
     }
 
     @GetMapping("/show")
     public String show(@RequestParam("id") int id, Model model) {
-        model.addAttribute("person", personService.getPersonById(id));  // ← через сервис
+        model.addAttribute("person", personService.getPersonById(id));
         return "people/show";
     }
 
@@ -38,26 +38,26 @@ public class PeopleController {
 
     @PostMapping
     public String create(@ModelAttribute("person") Person person) {
-        personService.savePerson(person);  // ← через сервис
+        personService.savePerson(person);
         return "redirect:/people";
     }
 
     @GetMapping("/edit")
     public String edit(@RequestParam("id") int id, Model model) {
-        model.addAttribute("person", personService.getPersonById(id));  // ← через сервис
+        model.addAttribute("person", personService.getPersonById(id));
         return "people/edit";
     }
 
     @PostMapping("/update")
     public String update(@RequestParam("id") int id,
                          @ModelAttribute("person") Person person) {
-        personService.updatePerson(id, person);  // ← через сервис
+        personService.updatePerson(id, person);
         return "redirect:/people";
     }
 
     @PostMapping("/delete")
     public String delete(@RequestParam("id") int id) {
-        personService.deletePerson(id);  // ← через сервис
+        personService.deletePerson(id);
         return "redirect:/people";
     }
 }
