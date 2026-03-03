@@ -9,7 +9,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Service
-@Transactional
 public class PersonService implements PersonServiceInterface {
 
     private final PersonDAOInterface personDAO;
@@ -19,46 +18,37 @@ public class PersonService implements PersonServiceInterface {
         this.personDAO = personDAO;
     }
 
+
     @Override
     public List<Person> getAllPeople() {
-
         return personDAO.index();
     }
 
     @Override
     public Person getPersonById(int id) {
-        Person person = personDAO.show(id);
-        if (person == null) {
-            throw new RuntimeException("Person not found with id: " + id);
-        }
-        return person;
+        return personDAO.show(id);
     }
 
+
     @Override
+    @Transactional
     public void savePerson(Person person) {
-        validatePerson(person);
         personDAO.save(person);
     }
 
     @Override
+    @Transactional
     public void updatePerson(int id, Person updatedPerson) {
-        getPersonById(id);
-        validatePerson(updatedPerson);
+
+        if (updatedPerson.getName() == null || updatedPerson.getName().trim().isEmpty()) {
+            throw new IllegalArgumentException("Name cannot be empty");
+        }
         personDAO.update(id, updatedPerson);
     }
 
     @Override
+    @Transactional
     public void deletePerson(int id) {
-        getPersonById(id);
         personDAO.delete(id);
-    }
-
-    private void validatePerson(Person person) {
-        if (person.getName() == null || person.getName().trim().isEmpty()) {
-            throw new IllegalArgumentException("Name cannot be empty");
-        }
-        if (person.getAge() <= 0) {
-            throw new IllegalArgumentException("Age must be positive");
-        }
     }
 }
